@@ -1,12 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Item, ItemStatsArray, ItemStatsFormatted } from '@/types/items';
 import { GetItems, GetItemsStats } from '@/services/apis/itemsService';
+import useRanks from './useRanks';
 
 const useItemsHooks = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [itemStats, setItemStats] = useState<ItemStatsArray>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [minimumRank, setMinimumRank] = useState<number>(() => {
+    const saved = localStorage.getItem('minimumRank');
+    return saved ? parseInt(saved) : 91;
+  });
+  const [maximumRank, setMaximumRank] = useState<number>(() => {
+    const saved = localStorage.getItem('maximumRank');
+    return saved ? parseInt(saved) : 116;
+  });
+
+  const { formattedRanks } = useRanks();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -22,7 +33,6 @@ const useItemsHooks = () => {
         setLoading(false);
       }
     };
-
     fetchItems();
   }, []);
 
@@ -31,7 +41,7 @@ const useItemsHooks = () => {
       setLoading(true);
       setError(null);
       try {
-        const itemStatsData = await GetItemsStats();
+        const itemStatsData = await GetItemsStats(minimumRank, maximumRank);
         setItemStats(itemStatsData);
       } catch (err) {
         console.error('Error fetching item stats:', err);
@@ -42,7 +52,23 @@ const useItemsHooks = () => {
     };
 
     fetchItemStats();
-  }, []);
+  }, [minimumRank, maximumRank]);
+
+  useEffect(() => {
+    localStorage.setItem('minimumRank', minimumRank.toString());
+  }, [minimumRank]);
+
+  useEffect(() => {
+    localStorage.setItem('maximumRank', maximumRank.toString());
+  }, [maximumRank]);
+
+  const minimumRankChange = (value: string) => {
+    setMinimumRank(parseInt(value));
+  };
+
+  const maximumRankChange = (value: string) => {
+    setMaximumRank(parseInt(value));
+  };
 
   const filteredItems = items?.filter((item) => item?.type === 'upgrade');
 
@@ -74,6 +100,11 @@ const useItemsHooks = () => {
     error,
     loading,
     itemStats,
+    maximumRank,
+    minimumRank,
+    maximumRankChange,
+    minimumRankChange,
+    formattedRanks,
   };
 };
 

@@ -122,24 +122,21 @@ export function HeroesList() {
   ];
 
   return (
-    <section className="container mx-auto px-4 py-8">
-      <header className="mb-8">
-        <h1 className="text-center text-3xl font-bold md:text-5xl">Deadlock</h1>
-        <div className="flex justify-center gap-2 pt-5">
-          <CustomSelect
-            value={minimumRank.toString()}
-            onValueChange={minimumRankChange}
-            formattedRanks={formattedRanks}
-            placeholder="Minimum Ranks"
-          />
-          <CustomSelect
-            value={maximumRank.toString()}
-            onValueChange={maximumRankChange}
-            formattedRanks={formattedRanks}
-            placeholder="Maximum Ranks"
-          />
-        </div>
-      </header>
+    <section className="container mx-auto px-4">
+      <div className="flex justify-center gap-2 pt-5">
+        <CustomSelect
+          value={minimumRank.toString()}
+          onValueChange={minimumRankChange}
+          formattedRanks={formattedRanks}
+          placeholder="Minimum Ranks"
+        />
+        <CustomSelect
+          value={maximumRank.toString()}
+          onValueChange={maximumRankChange}
+          formattedRanks={formattedRanks}
+          placeholder="Maximum Ranks"
+        />
+      </div>
 
       {loading ? (
         <HeroesTableSkeleton />

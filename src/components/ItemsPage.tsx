@@ -4,9 +4,19 @@ import { Button } from './ui/button';
 import { ArrowUpDown } from 'lucide-react';
 import type { ItemStatsFormatted } from '@/types/items';
 import type { ColumnDef } from '@tanstack/react-table';
+import CustomSelect from './ui/CustomSelect';
 
 const ItemsPage = () => {
-  const { loading, error, data } = useItemsHooks();
+  const {
+    loading,
+    error,
+    data,
+    minimumRank,
+    maximumRank,
+    formattedRanks,
+    minimumRankChange,
+    maximumRankChange,
+  } = useItemsHooks();
 
   if (error) {
     return (
@@ -91,11 +101,28 @@ const ItemsPage = () => {
   ];
 
   return (
-    <div className="w-full overflow-x-auto py-10">
-      <div className="min-w-[600px] md:min-w-0">
-        <DataTable columns={columns} data={data} />
+    <section className="container mx-auto px-4 py-8">
+      <div className="flex justify-center gap-2 pt-5">
+        <CustomSelect
+          value={minimumRank.toString()}
+          onValueChange={minimumRankChange}
+          formattedRanks={formattedRanks}
+          placeholder="Minimum Ranks"
+        />
+        <CustomSelect
+          value={maximumRank.toString()}
+          onValueChange={maximumRankChange}
+          formattedRanks={formattedRanks}
+          placeholder="Maximum Ranks"
+        />
       </div>
-    </div>
+
+      <div className="w-full overflow-x-auto py-10">
+        <div className="min-w-[600px] md:min-w-0">
+          <DataTable columns={columns} data={data} />
+        </div>
+      </div>
+    </section>
   );
 };
 

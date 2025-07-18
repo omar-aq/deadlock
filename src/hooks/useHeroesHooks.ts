@@ -1,15 +1,12 @@
 import { useEffect, useState, useMemo } from 'react';
 import { GetHeroes, GetHeroesStats } from '../services/apis/heroService';
-import { GetRanks } from '../services/apis/ranksService';
-import type { Ranks } from '../types/rank';
-import type { SelectRankOption } from '../types/rank';
 import type { HeroesStatsArray, Heroes, HeroTableRow } from '../types/hero';
+import useRanks from './useRanks';
 
 const useHeroesHooks = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [heroes, setHeroes] = useState<Heroes>([]);
-  const [ranks, setRanks] = useState<Ranks>([]);
   const [heroesStats, setHeroesStats] = useState<HeroesStatsArray>([]);
   const [minimumRank, setMinimumRank] = useState<number>(() => {
     const saved = localStorage.getItem('minimumRank');
@@ -20,17 +17,15 @@ const useHeroesHooks = () => {
     return saved ? parseInt(saved) : 116;
   });
 
+  const { formattedRanks } = useRanks();
+
   useEffect(() => {
     const fetchInitialData = async () => {
       setLoading(true);
       setError(null);
       try {
-        const [heroesData, ranksData] = await Promise.all([
-          GetHeroes(),
-          GetRanks(),
-        ]);
+        const heroesData = await GetHeroes();
         setHeroes(heroesData);
-        setRanks(ranksData);
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load data. Please try again later.');
@@ -74,28 +69,6 @@ const useHeroesHooks = () => {
     return map;
   }, [heroesStats]);
 
-  const formattedRanks = useMemo((): SelectRankOption[] => {
-    return ranks.flatMap((rank): SelectRankOption[] => {
-      if (rank.tier === 0) {
-        return [
-          {
-            tier: rank.tier,
-            name: rank.name,
-            image: rank.images.small,
-          },
-        ];
-      }
-
-      return Array.from({ length: 6 }, (_, i) => {
-        return {
-          tier: rank.tier * 10 + i + 1,
-          name: `${rank.name} ${i + 1}`,
-          image: rank.images[`small_subrank${i + 1}`] || '',
-        };
-      });
-    });
-  }, [ranks]);
-
   const minimumRankChange = (value: string) => {
     setMinimumRank(parseInt(value));
   };
@@ -134,7 +107,6 @@ const useHeroesHooks = () => {
   return {
     loading,
     error,
-    ranks,
     heroes,
     heroesStats,
     minimumRank,
