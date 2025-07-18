@@ -1,5 +1,7 @@
 import useItemsHooks from '@/hooks/useItemsHooks';
 import { DataTable } from './ui/data-table';
+import { Button } from './ui/button';
+import { ArrowUpDown } from 'lucide-react';
 import type { ItemStatsFormatted } from '@/types/items';
 import type { ColumnDef } from '@tanstack/react-table';
 
@@ -32,7 +34,21 @@ const ItemsPage = () => {
     },
     {
       accessorKey: 'name',
-      header: 'Item Name',
+      header: ({ column }) => {
+        return (
+          <div className="text-start">
+            <Button
+              variant="ghost"
+              onClick={() =>
+                column.toggleSorting(column.getIsSorted() === 'asc')
+              }
+            >
+              Item
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        );
+      },
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
           <img
@@ -46,11 +62,31 @@ const ItemsPage = () => {
     },
     {
       accessorKey: 'item_tier',
-      header: 'Tier',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Tier
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
     },
     {
       accessorKey: 'win_rate',
-      header: 'Win Rate',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Win Rate
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
     },
   ];
 
