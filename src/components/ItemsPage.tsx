@@ -2,9 +2,10 @@ import useItemsHooks from '@/hooks/useItemsHooks';
 import { DataTable } from './ui/data-table';
 import { Button } from './ui/button';
 import { ArrowUpDown } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import CustomSelect from './ui/CustomSelect';
 import type { ItemStatsFormatted } from '@/types/items';
 import type { ColumnDef } from '@tanstack/react-table';
-import CustomSelect from './ui/CustomSelect';
 
 const ItemsPage = () => {
   const {
@@ -14,6 +15,8 @@ const ItemsPage = () => {
     minimumRank,
     maximumRank,
     formattedRanks,
+    highestItemUsage,
+    highestWinRate,
     minimumRankChange,
     maximumRankChange,
   } = useItemsHooks();
@@ -96,6 +99,49 @@ const ItemsPage = () => {
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         );
+      },
+      cell: ({ row }) => (
+        <div className="flex flex-col justify-start gap-2">
+          <Progress
+            value={(Number(row.original.win_rate) / highestWinRate) * 100}
+          />
+          <span className="text-start">{row.original.win_rate}%</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: 'matches',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          >
+            Usage
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="flex flex-col justify-start gap-2">
+          <Progress value={(row.original.matches / highestItemUsage) * 100} />
+          <span className="text-start">{row.original.matches}</span>
+        </div>
+      ),
+    },
+    {
+      header: 'Confidence',
+      cell: ({ row }) => {
+        const matches = row.original.matches;
+        let icon;
+        if (matches >= highestItemUsage * 0.66) {
+          icon = '⭐⭐';
+        } else if (matches >= highestItemUsage * 0.33) {
+          icon = '⭐';
+        } else {
+          icon = '❓';
+        }
+        return <span className="flex justify-center text-xl">{icon}</span>;
       },
     },
   ];

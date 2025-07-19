@@ -71,6 +71,12 @@ const useItemsHooks = () => {
   };
 
   const filteredItems = items?.filter((item) => item?.type === 'upgrade');
+  const highestItemUsage = Math.max(
+    ...itemStats.map((stat) => stat?.matches || 0)
+  );
+  const highestWinRate = Math.max(
+    ...itemStats.map((stat) => (stat?.wins / stat?.matches) * 100 || 0)
+  );
 
   const itemsMap = useMemo(() => {
     const map: Record<string, Item> = {};
@@ -85,7 +91,7 @@ const useItemsHooks = () => {
       const item = itemsMap[stat?.item_id];
       return {
         item_id: stat?.item_id,
-        win_rate: ((stat?.wins / stat?.matches) * 100).toFixed(2) + '%',
+        win_rate: ((stat?.wins / stat?.matches) * 100).toFixed(2),
         matches: stat?.matches,
         name: item?.name,
         item_tier: item?.item_tier,
@@ -104,6 +110,8 @@ const useItemsHooks = () => {
     minimumRank,
     maximumRankChange,
     minimumRankChange,
+    highestItemUsage,
+    highestWinRate,
     formattedRanks,
   };
 };

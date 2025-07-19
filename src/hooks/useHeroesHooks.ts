@@ -85,6 +85,17 @@ const useHeroesHooks = () => {
     return matches ? (value / matches).toFixed(1) : '0';
   };
 
+  const highestWinRate = Math.max(
+    ...heroesStats.map((stat) => (stat?.wins / stat?.matches) * 100 || 0)
+  );
+  const highestPickRate = Math.max(
+    ...heroesStats.map((stat) =>
+      parseFloat(
+        getPercentageRate(stat?.matches || 0, stat?.matches_per_bucket || 0)
+      )
+    )
+  );
+
   const data: HeroTableRow[] = heroes.map((hero) => {
     const stats = heroesStatsMap.get(hero.id);
     const matches = stats?.matches ?? 0;
@@ -112,6 +123,8 @@ const useHeroesHooks = () => {
     minimumRank,
     maximumRank,
     formattedRanks,
+    highestWinRate,
+    highestPickRate,
     minimumRankChange,
     maximumRankChange,
     data,

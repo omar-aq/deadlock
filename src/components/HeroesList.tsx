@@ -1,9 +1,9 @@
 import type { HeroTableRow } from '../types/hero';
 import useHeroesHooks from '@/hooks/useHeroesHooks';
-
 import CustomSelect from './ui/CustomSelect';
 import HeroesTableSkeleton from './HeroesTableSkeleton';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { DataTable } from './ui/data-table';
 import { ArrowUpDown } from 'lucide-react';
 import type { ColumnDef } from '@tanstack/react-table';
@@ -12,12 +12,14 @@ export function HeroesList() {
   const {
     loading,
     error,
+    data,
     heroes,
     heroesStats,
-    data,
     formattedRanks,
     minimumRank,
     maximumRank,
+    highestWinRate,
+    highestPickRate,
     minimumRankChange,
     maximumRankChange,
   } = useHeroesHooks();
@@ -73,7 +75,14 @@ export function HeroesList() {
           </Button>
         );
       },
-      cell: ({ row }) => <span>{row.original.winRate}%</span>,
+      cell: ({ row }) => (
+        <div className="flex flex-col justify-start gap-2">
+          <Progress
+            value={(Number(row.original.winRate) / highestWinRate) * 100}
+          />
+          <span className="text-start">{row.original.winRate}%</span>
+        </div>
+      ),
     },
     {
       accessorKey: 'pickRate',
@@ -88,7 +97,14 @@ export function HeroesList() {
           </Button>
         );
       },
-      cell: ({ row }) => <span>{row.original.pickRate}%</span>,
+      cell: ({ row }) => (
+        <div className="flex flex-col justify-start gap-2">
+          <Progress
+            value={(Number(row.original.pickRate) / highestPickRate) * 100}
+          />
+          <span className="text-start">{row.original.pickRate}%</span>
+        </div>
+      ),
     },
     {
       accessorKey: 'kda',
