@@ -6,8 +6,8 @@ export const GetItems = async () => {
 };
 
 export const GetItemsStats = async (
-  minimumRank: number,
-  maximumRank: number
+  minimumRank: string,
+  maximumRank: string
 ) => {
   let query = '';
   if (minimumRank && maximumRank) {

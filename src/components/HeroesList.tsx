@@ -15,13 +15,13 @@ export function HeroesList() {
     data,
     heroes,
     heroesStats,
+    minimumRankParam,
+    maximumRankParam,
+    setMinimumRank,
+    setMaximumRank,
     formattedRanks,
-    minimumRank,
-    maximumRank,
     highestWinRate,
     highestPickRate,
-    minimumRankChange,
-    maximumRankChange,
   } = useHeroesHooks();
 
   if (error) {
@@ -141,14 +141,14 @@ export function HeroesList() {
     <section className="container mx-auto px-4">
       <div className="flex justify-center gap-2 pt-5">
         <CustomSelect
-          value={minimumRank.toString()}
-          onValueChange={minimumRankChange}
+          value={minimumRankParam}
+          onValueChange={setMinimumRank}
           formattedRanks={formattedRanks}
           placeholder="Minimum Ranks"
         />
         <CustomSelect
-          value={maximumRank.toString()}
-          onValueChange={maximumRankChange}
+          value={maximumRankParam}
+          onValueChange={setMaximumRank}
           formattedRanks={formattedRanks}
           placeholder="Maximum Ranks"
         />

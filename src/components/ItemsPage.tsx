@@ -12,13 +12,13 @@ const ItemsPage = () => {
     loading,
     error,
     data,
-    minimumRank,
-    maximumRank,
+    minimumRankParam,
+    maximumRankParam,
+    setMinimumRank,
+    setMaximumRank,
     formattedRanks,
     highestItemUsage,
     highestWinRate,
-    minimumRankChange,
-    maximumRankChange,
   } = useItemsHooks();
 
   if (error) {
@@ -150,14 +150,14 @@ const ItemsPage = () => {
     <section className="container mx-auto px-4 py-8">
       <div className="flex justify-center gap-2 pt-5">
         <CustomSelect
-          value={minimumRank.toString()}
-          onValueChange={minimumRankChange}
+          value={minimumRankParam}
+          onValueChange={setMinimumRank}
           formattedRanks={formattedRanks}
           placeholder="Minimum Ranks"
         />
         <CustomSelect
-          value={maximumRank.toString()}
-          onValueChange={maximumRankChange}
+          value={maximumRankParam}
+          onValueChange={setMaximumRank}
           formattedRanks={formattedRanks}
           placeholder="Maximum Ranks"
         />

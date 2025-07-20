@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Item, ItemStatsArray, ItemStatsFormatted } from '@/types/items';
 import { GetItems, GetItemsStats } from '@/services/apis/itemsService';
+import useStatsFilterHook from './useStatsFilterHook';
 import useRanks from './useRanks';
 
 const useItemsHooks = () => {
@@ -8,16 +9,10 @@ const useItemsHooks = () => {
   const [itemStats, setItemStats] = useState<ItemStatsArray>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [minimumRank, setMinimumRank] = useState<number>(() => {
-    const saved = localStorage.getItem('minimumRank');
-    return saved ? parseInt(saved) : 91;
-  });
-  const [maximumRank, setMaximumRank] = useState<number>(() => {
-    const saved = localStorage.getItem('maximumRank');
-    return saved ? parseInt(saved) : 116;
-  });
 
   const { formattedRanks } = useRanks();
+  const { minimumRankParam, maximumRankParam, setMinimumRank, setMaximumRank } =
+    useStatsFilterHook();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -41,7 +36,10 @@ const useItemsHooks = () => {
       setLoading(true);
       setError(null);
       try {
-        const itemStatsData = await GetItemsStats(minimumRank, maximumRank);
+        const itemStatsData = await GetItemsStats(
+          minimumRankParam,
+          maximumRankParam
+        );
         setItemStats(itemStatsData);
       } catch (err) {
         console.error('Error fetching item stats:', err);
@@ -52,23 +50,7 @@ const useItemsHooks = () => {
     };
 
     fetchItemStats();
-  }, [minimumRank, maximumRank]);
-
-  useEffect(() => {
-    localStorage.setItem('minimumRank', minimumRank.toString());
-  }, [minimumRank]);
-
-  useEffect(() => {
-    localStorage.setItem('maximumRank', maximumRank.toString());
-  }, [maximumRank]);
-
-  const minimumRankChange = (value: string) => {
-    setMinimumRank(parseInt(value));
-  };
-
-  const maximumRankChange = (value: string) => {
-    setMaximumRank(parseInt(value));
-  };
+  }, [minimumRankParam, maximumRankParam]);
 
   const filteredItems = items?.filter((item) => item?.type === 'upgrade');
   const highestItemUsage = Math.max(
@@ -106,10 +88,10 @@ const useItemsHooks = () => {
     error,
     loading,
     itemStats,
-    maximumRank,
-    minimumRank,
-    maximumRankChange,
-    minimumRankChange,
+    maximumRankParam,
+    minimumRankParam,
+    setMinimumRank,
+    setMaximumRank,
     highestItemUsage,
     highestWinRate,
     formattedRanks,

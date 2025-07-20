@@ -5,7 +5,7 @@ export const GetHeroes = async () => {
   return response.data;
 };
 
-export const GetHeroesStats = async (minRank: number, maxRank: number) => {
+export const GetHeroesStats = async (minRank: string, maxRank: string) => {
   let query = '';
   if (minRank && maxRank) {
     query = `?min_average_badge=${minRank}&max_average_badge=${maxRank}`;
