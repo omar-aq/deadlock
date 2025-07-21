@@ -138,7 +138,12 @@ const ItemsPage = () => {
   ];
 
   return (
-    <section className="container mx-auto px-4 py-8">
+    <section className="container mx-auto px-4">
+      <header className="pt-4">
+        <h1 className="text-center text-3xl font-bold md:text-5xl">
+          Items Stats
+        </h1>
+      </header>
       <div className="flex justify-center gap-2 pt-5">
         <CustomSelect
           value={minimumRankParam}

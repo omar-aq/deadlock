@@ -16,6 +16,16 @@ export function NavBar() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
+                  to="/"
+                  className="hover:bg-accent rounded px-4 py-2 text-lg font-medium transition-colors"
+                >
+                  Home
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link
                   to="/heroes"
                   className="hover:bg-accent rounded px-4 py-2 text-lg font-medium transition-colors"
                 >
