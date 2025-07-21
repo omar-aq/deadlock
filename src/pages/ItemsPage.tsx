@@ -1,9 +1,10 @@
 import useItemsHooks from '@/hooks/useItemsHooks';
-import { DataTable } from './ui/data-table';
-import { Button } from './ui/button';
+import { DataTable } from '../components/ui/data-table';
+import { Button } from '../components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import CustomSelect from './ui/CustomSelect';
+import CustomSelect from '../components/ui/CustomSelect';
+import TableSkeleton from '@/components/TableSkeleton';
 import type { ItemStatsFormatted } from '@/types/items';
 import type { ColumnDef } from '@tanstack/react-table';
 
@@ -162,12 +163,15 @@ const ItemsPage = () => {
           placeholder="Maximum Ranks"
         />
       </div>
-
-      <div className="w-full overflow-x-auto py-10">
-        <div className="min-w-[600px] md:min-w-0">
-          <DataTable columns={columns} data={data} />
+      {loading ? (
+        <TableSkeleton />
+      ) : (
+        <div className="w-full overflow-x-auto py-10">
+          <div className="min-w-[600px] md:min-w-0">
+            <DataTable columns={columns} data={data} />
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
-const HeroesSkeleton = () => {
+const TableSkeleton = () => {
   return (
     <div className="w-full overflow-x-auto py-10">
       <div className="min-w-[600px] md:min-w-0">
@@ -29,4 +29,4 @@ const HeroesSkeleton = () => {
   );
 };
 
-export default HeroesSkeleton;
+export default TableSkeleton;

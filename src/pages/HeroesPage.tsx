@@ -1,14 +1,14 @@
 import type { HeroTableRow } from '../types/hero';
 import useHeroesHooks from '@/hooks/useHeroesHooks';
-import CustomSelect from './ui/CustomSelect';
-import HeroesTableSkeleton from './HeroesTableSkeleton';
+import CustomSelect from '../components/ui/CustomSelect';
+import TableSkeleton from '../components/TableSkeleton';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { DataTable } from './ui/data-table';
+import { DataTable } from '../components/ui/data-table';
 import { ArrowUpDown } from 'lucide-react';
 import type { ColumnDef } from '@tanstack/react-table';
 
-export function HeroesList() {
+const HeroesPage = () => {
   const {
     loading,
     error,
@@ -155,7 +155,7 @@ export function HeroesList() {
       </div>
 
       {loading ? (
-        <HeroesTableSkeleton />
+        <TableSkeleton />
       ) : (
         <div className="w-full overflow-x-auto py-10">
           <div className="min-w-[600px] md:min-w-0">
@@ -165,4 +165,6 @@ export function HeroesList() {
       )}
     </section>
   );
-}
+};
+
+export default HeroesPage;
