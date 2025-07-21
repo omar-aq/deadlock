@@ -13,8 +13,6 @@ const HeroesPage = () => {
     loading,
     error,
     data,
-    heroes,
-    heroesStats,
     minimumRankParam,
     maximumRankParam,
     setMinimumRank,
@@ -28,16 +26,6 @@ const HeroesPage = () => {
     return (
       <div className="flex items-center justify-center py-10">
         <span className="text-lg text-red-500 dark:text-red-400">{error}</span>
-      </div>
-    );
-  }
-
-  if (!loading && (heroes?.length === 0 || heroesStats?.length === 0)) {
-    return (
-      <div className="flex items-center justify-center py-10">
-        <span className="text-lg text-gray-500 dark:text-gray-300">
-          No heroes found.
-        </span>
       </div>
     );
   }

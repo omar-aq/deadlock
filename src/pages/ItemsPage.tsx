@@ -30,16 +30,6 @@ const ItemsPage = () => {
     );
   }
 
-  if (!loading && (!data || data.length === 0)) {
-    return (
-      <div className="flex items-center justify-center py-10">
-        <span className="text-lg text-gray-500 dark:text-gray-300">
-          No data available
-        </span>
-      </div>
-    );
-  }
-
   const columns: ColumnDef<ItemStatsFormatted>[] = [
     {
       accessorKey: '#',
