@@ -46,10 +46,10 @@ export function NavBar() {
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
-                  to="/player"
+                  to="/leaderboard"
                   className="hover:bg-accent rounded px-4 py-2 text-lg font-medium transition-colors"
                 >
-                  Player
+                  Leaderboard
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
