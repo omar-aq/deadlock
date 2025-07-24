@@ -5,5 +5,5 @@ export const GetLeaderboard = async (region: string) => {
   const response = await apiClient.get(`/leaderboard/${region}`, {
     baseURL: import.meta.env.VITE_API_BASE_URL,
   });
-  return response.data;
+  return response.data.entries;
 };
