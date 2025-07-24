@@ -1,7 +1,8 @@
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import useLeaderboardHook from '@/hooks/useLeaderboardHook';
 
 const LeaderboardPage = () => {
-  const { leaderboard } = useLeaderboardHook();
+  const { leaderboard, region, Regions, onRegionChange } = useLeaderboardHook();
   console.log(leaderboard);
 
   return (
@@ -11,6 +12,22 @@ const LeaderboardPage = () => {
           Welcome to the leaderBoard
         </h1>
       </header>
+      <div className="flex justify-center gap-2 pt-5">
+        <Tabs
+          value={region}
+          defaultValue={region}
+          onValueChange={onRegionChange}
+          className="w-[400px]"
+        >
+          <TabsList>
+            {Regions.map((region) => (
+              <TabsTrigger key={region} value={region}>
+                {region}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
     </section>
   );
 };
