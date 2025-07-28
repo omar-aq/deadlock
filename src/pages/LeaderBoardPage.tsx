@@ -6,9 +6,15 @@ import type { ColumnDef } from '@tanstack/react-table';
 import type { leaderboard } from '@/types/leaderboard';
 
 const LeaderboardPage = () => {
-  const { loading, error, leaderboard, region, Regions, onRegionChange } =
-    useLeaderboardHook();
-  //TODO: add pagination on Front-End side because backend is not supported, and add rank_badge image from ranks API
+  const {
+    loading,
+    error,
+    region,
+    Regions,
+    onRegionChange,
+    formattedLeaderboard,
+  } = useLeaderboardHook();
+  //TODO: add pagination on Front-End side because backend is not supported
 
   if (error) {
     return (
@@ -30,9 +36,17 @@ const LeaderboardPage = () => {
       cell: ({ row }) => <span>{row.original.account_name}</span>,
     },
     {
-      accessorKey: 'badge_level',
+      accessorKey: 'badge_image',
       header: 'Rank Badge',
-      cell: ({ row }) => <span>{row.original.badge_level}</span>,
+      cell: ({ row }) => (
+        <div className="flex justify-center">
+          <img
+            src={row.original.badge_image}
+            alt={row.original.badge_image}
+            className="h-8 w-8 rounded-full"
+          />
+        </div>
+      ),
     },
   ];
 
@@ -64,7 +78,7 @@ const LeaderboardPage = () => {
       ) : (
         <div className="w-full overflow-x-auto py-10">
           <div className="min-w-[600px] md:min-w-0">
-            <DataTable columns={columns} data={leaderboard} />
+            <DataTable columns={columns} data={formattedLeaderboard} />
           </div>
         </div>
       )}

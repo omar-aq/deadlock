@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { Regions } from '@/enums/regions';
 import { GetLeaderboard } from '@/services/apis/leaderboardService';
 import type { leaderboardArray } from '@/types/leaderboard';
+import useRanks from './useRanks';
 
 const useLeaderboardHook = () => {
   const [leaderboard, setLeaderboard] = useState<leaderboardArray>([]);
   const [region, setRegion] = useState<string>(Regions[0]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { formattedRanks } = useRanks();
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -26,9 +29,22 @@ const useLeaderboardHook = () => {
     fetchLeaderboard();
   }, [region]);
 
-  const onRegionChange = (value: string) => {
+  const formattedLeaderboard: leaderboardArray = useMemo(() => {
+    return leaderboard.map((player) => {
+      return {
+        account_name: player.account_name,
+        rank: player.rank,
+        badge_level: player.badge_level,
+        badge_image:
+          formattedRanks.find((rank) => rank.tier === player.badge_level)
+            ?.image || '',
+      };
+    });
+  }, [leaderboard, formattedRanks]);
+
+  const onRegionChange = useCallback((value: string) => {
     setRegion(value);
-  };
+  }, []);
 
   return {
     error,
@@ -37,6 +53,7 @@ const useLeaderboardHook = () => {
     loading,
     leaderboard,
     onRegionChange,
+    formattedLeaderboard,
   };
 };
 
