@@ -9,8 +9,13 @@ const useLeaderboardHook = () => {
   const [region, setRegion] = useState<string>(Regions[0]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
   const { formattedRanks } = useRanks();
+
+  const ranksMap = useMemo(() => {
+    const map = new Map<number, string>();
+    formattedRanks.forEach((rank) => map.set(rank.tier, rank.image));
+    return map;
+  }, [formattedRanks]);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -29,18 +34,12 @@ const useLeaderboardHook = () => {
     fetchLeaderboard();
   }, [region]);
 
-  const formattedLeaderboard: leaderboardArray = useMemo(() => {
-    return leaderboard.map((player) => {
-      return {
-        account_name: player.account_name,
-        rank: player.rank,
-        badge_level: player.badge_level,
-        badge_image:
-          formattedRanks.find((rank) => rank.tier === player.badge_level)
-            ?.image || '',
-      };
-    });
-  }, [leaderboard, formattedRanks]);
+  const formattedLeaderboard = useMemo(() => {
+    return leaderboard.map((player) => ({
+      ...player,
+      badge_image: ranksMap.get(player.badge_level) || '',
+    }));
+  }, [leaderboard, ranksMap]);
 
   const onRegionChange = useCallback((value: string) => {
     setRegion(value);
@@ -51,7 +50,6 @@ const useLeaderboardHook = () => {
     region,
     Regions,
     loading,
-    leaderboard,
     onRegionChange,
     formattedLeaderboard,
   };
