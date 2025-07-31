@@ -4,14 +4,8 @@ import useLeaderboardHook from '@/hooks/useLeaderboardHook';
 import TableSkeleton from '@/components/TableSkeleton';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { leaderboard } from '@/types/leaderboard';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
+// Pagination components now imported in PaginatedNavigation
+import PaginatedNavigation from '@/components/PaginatedTemplate';
 
 const LeaderboardPage = () => {
   const {
@@ -19,7 +13,7 @@ const LeaderboardPage = () => {
     error,
     region,
     Regions,
-    allPages,
+    // allPages,
     goToPage,
     totalPages,
     currentPage,
@@ -92,48 +86,11 @@ const LeaderboardPage = () => {
             <DataTable columns={columns} data={paginatedData} />
           </div>
 
-          {totalPages > 1 && (
-            <Pagination className="mt-6">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    to={''}
-                    onClick={() => goToPage(currentPage - 1)}
-                    className={
-                      currentPage <= 1
-                        ? 'cursor-not-allowed opacity-50'
-                        : 'cursor-pointer'
-                    }
-                  />
-                </PaginationItem>
-
-                {allPages.map((page) => (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      to={''}
-                      onClick={() => goToPage(page)}
-                      isActive={page === currentPage}
-                      className="cursor-pointer"
-                    >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                ))}
-
-                <PaginationItem>
-                  <PaginationNext
-                    to={''}
-                    onClick={() => goToPage(currentPage + 1)}
-                    className={
-                      currentPage >= totalPages
-                        ? 'cursor-not-allowed opacity-50'
-                        : 'cursor-pointer'
-                    }
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          )}
+          <PaginatedNavigation
+            totalPages={totalPages}
+            currentPage={currentPage}
+            goToPage={goToPage}
+          />
         </div>
       )}
     </section>
