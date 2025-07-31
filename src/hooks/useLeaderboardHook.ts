@@ -68,17 +68,12 @@ const useLeaderboardHook = () => {
     }
   };
 
-  const allPages = useMemo(() => {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }, [totalPages]);
-
   return {
     error,
     region,
     Regions,
     loading,
     goToPage,
-    allPages,
     totalPages,
     currentPage,
     onRegionChange,

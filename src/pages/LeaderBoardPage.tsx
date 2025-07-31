@@ -13,7 +13,6 @@ const LeaderboardPage = () => {
     error,
     region,
     Regions,
-    // allPages,
     goToPage,
     totalPages,
     currentPage,
