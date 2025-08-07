@@ -1,6 +1,9 @@
-import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import useSearchQuery from '@/hooks/useSearchQuery';
 
 const HomePage = () => {
+  const { inputValue, handleInputChange } = useSearchQuery();
+
   return (
     <section className="container mx-auto px-4">
       <header className="pt-4">
@@ -11,8 +14,12 @@ const HomePage = () => {
       <p className="pt-2 text-center text-lg">
         Explore detailed statistics for items and heroes.
       </p>
-      <div className="flex justify-center pt-2">
-        <Button className="ml-4">Get Started</Button>
+      <div className="flex justify-center pt-4">
+        <Input
+          placeholder="Search for a player..."
+          value={inputValue}
+          onChange={handleInputChange}
+        />
       </div>
     </section>
   );

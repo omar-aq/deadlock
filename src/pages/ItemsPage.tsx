@@ -1,4 +1,4 @@
-import useItemsHooks from '@/hooks/useItemsHooks';
+import useItemsHooks from '@/hooks/useItems';
 import { DataTable } from '../components/ui/data-table';
 import { Button } from '../components/ui/button';
 import { ArrowUpDown } from 'lucide-react';

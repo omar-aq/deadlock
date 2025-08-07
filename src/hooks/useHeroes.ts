@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { GetHeroes, GetHeroesStats } from '../services/apis/heroService';
-import useStatsFilterHook from './useStatsFilterHook';
+import useStatsFilterHook from './useStatsFilter';
 import type { HeroesStatsArray, Heroes, HeroTableRow } from '../types/hero';
 import useRanks from './useRanks';
 

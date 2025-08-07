@@ -1,5 +1,5 @@
 import type { HeroTableRow } from '../types/hero';
-import useHeroesHooks from '@/hooks/useHeroesHooks';
+import useHeroesHooks from '@/hooks/useHeroes';
 import CustomSelect from '../components/ui/CustomSelect';
 import TableSkeleton from '../components/TableSkeleton';
 import { Button } from '@/components/ui/button';

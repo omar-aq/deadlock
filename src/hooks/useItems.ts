@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Item, ItemStatsArray, ItemStatsFormatted } from '@/types/items';
 import { GetItems, GetItemsStats } from '@/services/apis/itemsService';
-import useStatsFilterHook from './useStatsFilterHook';
+import useStatsFilterHook from './useStatsFilter';
 import useRanks from './useRanks';
 
 const useItemsHooks = () => {
