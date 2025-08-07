@@ -127,8 +127,8 @@ const HeroesPage = () => {
 
   return (
     <section className="container mx-auto px-4">
-      <header className="pt-4">
-        <h1 className="text-center text-3xl font-bold md:text-5xl">
+      <header className="py-6">
+        <h1 className="from-foreground to-foreground/60 bg-gradient-to-b bg-clip-text text-center text-3xl font-bold text-balance text-transparent md:text-5xl">
           Heroes Stats
         </h1>
       </header>
