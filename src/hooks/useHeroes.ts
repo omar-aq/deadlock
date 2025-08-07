@@ -4,7 +4,7 @@ import useStatsFilterHook from './useStatsFilter';
 import type { HeroesStatsArray, Heroes, HeroTableRow } from '../types/hero';
 import useRanks from './useRanks';
 
-const useHeroesHooks = () => {
+const useHeroes = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [heroes, setHeroes] = useState<Heroes>([]);
@@ -113,4 +113,4 @@ const useHeroesHooks = () => {
   };
 };
 
-export default useHeroesHooks;
+export default useHeroes;

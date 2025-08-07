@@ -1,5 +1,5 @@
 import type { HeroTableRow } from '../types/hero';
-import useHeroesHooks from '@/hooks/useHeroes';
+import useHeroes from '@/hooks/useHeroes';
 import CustomSelect from '../components/ui/CustomSelect';
 import TableSkeleton from '../components/TableSkeleton';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ const HeroesPage = () => {
     formattedRanks,
     highestWinRate,
     highestPickRate,
-  } = useHeroesHooks();
+  } = useHeroes();
 
   if (error) {
     return (

@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 const DEFAULT_MIN_RANK = '91';
 const DEFAULT_MAX_RANK = '116';
 
-const useStatsFilterHook = () => {
+const useStatsFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initializedRef = useRef(false);
 
@@ -64,4 +64,4 @@ const useStatsFilterHook = () => {
   };
 };
 
-export default useStatsFilterHook;
+export default useStatsFilter;

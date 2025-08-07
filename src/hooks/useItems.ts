@@ -4,7 +4,7 @@ import { GetItems, GetItemsStats } from '@/services/apis/itemsService';
 import useStatsFilterHook from './useStatsFilter';
 import useRanks from './useRanks';
 
-const useItemsHooks = () => {
+const useItems = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [itemStats, setItemStats] = useState<ItemStatsArray>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -98,4 +98,4 @@ const useItemsHooks = () => {
   };
 };
 
-export default useItemsHooks;
+export default useItems;

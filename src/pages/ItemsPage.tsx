@@ -1,4 +1,4 @@
-import useItemsHooks from '@/hooks/useItems';
+import useItems from '@/hooks/useItems';
 import { DataTable } from '../components/ui/data-table';
 import { Button } from '../components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
@@ -20,7 +20,7 @@ const ItemsPage = () => {
     formattedRanks,
     highestItemUsage,
     highestWinRate,
-  } = useItemsHooks();
+  } = useItems();
 
   if (error) {
     return (

@@ -2,9 +2,11 @@ import { useEffect, useCallback, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { GetSteamProfile } from '@/services/apis/steamSearch';
 import { useDebounce } from '@/hooks/useDebounce';
+import type { steamProfileArray } from '@/types/steamProfile';
 
 const useSearchQuery = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [profileData, setProfileData] = useState<steamProfileArray>([]);
   const searchQuery = searchParams.get('searchQuery') || '';
   const [inputValue, setInputValue] = useState(searchQuery);
   const debouncedQuery = useDebounce(inputValue, 500);
@@ -26,8 +28,8 @@ const useSearchQuery = () => {
       if (!debouncedQuery) return;
 
       try {
-        const profileData = await GetSteamProfile(debouncedQuery);
-        console.log(profileData);
+        const data = await GetSteamProfile(debouncedQuery);
+        setProfileData(data);
       } catch (error) {
         console.error('Error fetching Steam profile:', error);
       }
@@ -46,6 +48,7 @@ const useSearchQuery = () => {
   return {
     inputValue,
     searchQuery,
+    profileData,
     handleInputChange,
   };
 };

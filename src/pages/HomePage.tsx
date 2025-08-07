@@ -2,7 +2,8 @@ import { Input } from '@/components/ui/input';
 import useSearchQuery from '@/hooks/useSearchQuery';
 
 const HomePage = () => {
-  const { inputValue, handleInputChange } = useSearchQuery();
+  const { inputValue, handleInputChange, profileData } = useSearchQuery();
+  console.log(profileData);
 
   return (
     <section className="container mx-auto px-4">

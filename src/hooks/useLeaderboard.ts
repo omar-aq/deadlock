@@ -6,7 +6,7 @@ import useRanks from './useRanks';
 
 const PAGE_SIZE = 100;
 
-const useLeaderboardHook = () => {
+const useLeaderboard = () => {
   const [leaderboard, setLeaderboard] = useState<leaderboardArray>([]);
   const [region, setRegion] = useState<string>(Regions[0]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -82,4 +82,4 @@ const useLeaderboardHook = () => {
   };
 };
 
-export default useLeaderboardHook;
+export default useLeaderboard;

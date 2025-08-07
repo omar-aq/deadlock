@@ -1,10 +1,9 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DataTable } from '@/components/ui/data-table';
-import useLeaderboardHook from '@/hooks/useLeaderboard';
+import useLeaderboard from '@/hooks/useLeaderboard';
 import TableSkeleton from '@/components/TableSkeleton';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { leaderboard } from '@/types/leaderboard';
-// Pagination components now imported in PaginatedNavigation
 import PaginatedNavigation from '@/components/PaginatedTemplate';
 
 const LeaderboardPage = () => {
@@ -18,7 +17,7 @@ const LeaderboardPage = () => {
     currentPage,
     paginatedData,
     onRegionChange,
-  } = useLeaderboardHook();
+  } = useLeaderboard();
 
   const columns: ColumnDef<leaderboard>[] = [
     {
