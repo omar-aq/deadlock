@@ -11,3 +11,15 @@ export interface SelectRankOption {
 }
 
 export type Ranks = Rank[];
+
+export interface PlayerMmr {
+  account_id: number;
+  division: number;
+  division_tier: number;
+  match_id: number;
+  player_score: number;
+  rank: number;
+  start_time: number;
+}
+
+export type PlayerMmrArray = PlayerMmr[];

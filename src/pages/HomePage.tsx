@@ -1,23 +1,22 @@
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, ExternalLink } from 'lucide-react';
-import useSearchQuery from '@/hooks/useSearchQuery';
+import { Search } from 'lucide-react';
+import TeamSkeleton from '@/components/Teamskeleton';
+import useHome from '@/hooks/useHome';
 import LestSkeleton from '@/components/ListSkeleton';
+import Team from '@/components/Team';
+import ProfileList from '@/components/ProfileList';
 
 const HomePage = () => {
-  const { inputValue, handleInputChange, profileData, loading } =
-    useSearchQuery();
-
-  const countryCodeToFlagEmoji = (code: string | null) => {
-    if (!code) return null;
-    const upper = code.trim().toUpperCase();
-    if (upper.length !== 2) return upper;
-    const OFFSET = 127397;
-    const chars = Array.from(upper).map((c) =>
-      String.fromCodePoint(c.charCodeAt(0) + OFFSET)
-    );
-    return chars.join('');
-  };
+  const {
+    loading,
+    inputValue,
+    profileData,
+    heroIdToImage,
+    topFiveMatches,
+    handleInputChange,
+    playerRankImageById,
+    countryCodeToFlagEmoji,
+  } = useHome();
 
   return (
     <section className="container mx-auto px-4">
@@ -50,53 +49,10 @@ const HomePage = () => {
         {loading ? (
           <LestSkeleton />
         ) : profileData && profileData.length > 0 ? (
-          <ul className="space-y-3">
-            {profileData.map((player) => (
-              <li
-                key={player.account_id}
-                className="group bg-card/50 hover:bg-accent/50 supports-[backdrop-filter]:bg-card/40 rounded-xl border p-4 shadow-sm backdrop-blur transition-colors"
-              >
-                <div className="flex items-center gap-4">
-                  <img
-                    src={
-                      player.avatarmedium || player.avatar || player.avatarfull
-                    }
-                    alt={player.personaname}
-                    className="size-12 rounded-full object-cover"
-                    loading="lazy"
-                  />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
-                      <h3 className="truncate text-base font-semibold">
-                        {player.personaname}
-                      </h3>
-                      {player.countrycode && (
-                        <span className="text-xl" title={player.countrycode}>
-                          {countryCodeToFlagEmoji(player.countrycode)}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-muted-foreground mt-0.5 line-clamp-1 text-sm">
-                      {player.realname || 'Unknown name'} · ID:{' '}
-                      {player.account_id}
-                    </p>
-                  </div>
-                  <a
-                    href={player.profileurl}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="shrink-0"
-                    aria-label={`Open ${player.personaname} on Steam`}
-                  >
-                    <Button variant="outline" size="sm">
-                      View on Steam
-                      <ExternalLink className="ml-1 size-4" />
-                    </Button>
-                  </a>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <ProfileList
+            profileData={profileData}
+            countryCodeToFlagEmoji={countryCodeToFlagEmoji}
+          />
         ) : inputValue.trim().length > 0 ? (
           <div className="bg-card/50 text-muted-foreground rounded-xl border p-8 text-center">
             No players found. Try a different search term.
@@ -105,6 +61,65 @@ const HomePage = () => {
           <div className="bg-card/50 text-muted-foreground rounded-xl border p-8 text-center">
             Start by searching for a player above.
           </div>
+        )}
+      </div>
+
+      <div className="mx-auto mt-10 w-full max-w-5xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="from-foreground to-foreground/60 bg-gradient-to-b bg-clip-text text-2xl font-semibold text-balance text-transparent md:text-3xl">
+            Top Active Matches
+          </h2>
+        </div>
+
+        {loading ? (
+          <TeamSkeleton />
+        ) : (
+          <ul className="space-y-4">
+            {topFiveMatches.map((match) => {
+              const team0 = match.players.filter((player) => player.team === 0);
+              const team1 = match.players.filter((player) => player.team === 1);
+              return (
+                <li
+                  key={match.match_id}
+                  className="bg-card/50 supports-[backdrop-filter]:bg-card/40 rounded-xl border p-6 shadow-sm backdrop-blur"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                      <span className="text-muted-foreground text-sm font-medium">
+                        Match
+                      </span>
+                      <span className="text-lg font-semibold">
+                        #{match.match_id}
+                      </span>
+                      <span className="bg-border hidden h-4 w-px md:inline-block" />
+                      <span className="text-muted-foreground text-sm">
+                        {match.region_mode_parsed}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-5 md:grid-cols-2">
+                    <Team
+                      team={team0}
+                      heroIdToImage={heroIdToImage}
+                      playerRankImageById={playerRankImageById}
+                      teamName="Amber Hand"
+                      netWorth={match.net_worth_team_0}
+                      colorClass="bg-amber-500"
+                    />
+                    <Team
+                      team={team1}
+                      heroIdToImage={heroIdToImage}
+                      playerRankImageById={playerRankImageById}
+                      teamName="Sapphire Flame"
+                      netWorth={match.net_worth_team_1}
+                      colorClass="bg-sky-500"
+                    />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         )}
       </div>
     </section>
