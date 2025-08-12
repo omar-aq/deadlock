@@ -15,10 +15,11 @@ import ProfileList from '@/components/ProfileList';
 
 const HomePage = () => {
   const {
-    loading,
     inputValue,
     profileData,
     heroIdToImage,
+    matchesLoading,
+    profileLoading,
     topFiveMatches,
     handleInputChange,
     playerRankImageById,
@@ -46,7 +47,7 @@ const HomePage = () => {
           </h2>
         </div>
 
-        {loading ? (
+        {matchesLoading ? (
           <TeamSkeleton />
         ) : (
           <Carousel
@@ -58,7 +59,7 @@ const HomePage = () => {
             }}
           >
             <CarouselContent>
-              {[...topFiveMatches, ...topFiveMatches].map((match, idx) => {
+              {topFiveMatches.map((match, idx) => {
                 const team0 = match.players.filter(
                   (player) => player.team === 0
                 );
@@ -128,7 +129,7 @@ const HomePage = () => {
       </div>
 
       <div className="mx-auto mt-6 w-full max-w-3xl">
-        {loading ? (
+        {profileLoading ? (
           <LestSkeleton />
         ) : profileData && profileData.length > 0 ? (
           <ProfileList

@@ -13,7 +13,8 @@ import type { steamProfileArray } from '@/types/steamProfile';
 const useSearchQuery = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [profileData, setProfileData] = useState<steamProfileArray>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [matchesLoading, setMatchesLoading] = useState<boolean>(false);
+  const [profileLoading, setProfileLoading] = useState<boolean>(false);
   const searchQuery = searchParams.get('searchQuery') || '';
   const [inputValue, setInputValue] = useState(searchQuery);
   const debouncedQuery = useDebounce(inputValue, 500);
@@ -57,13 +58,13 @@ const useSearchQuery = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       try {
-        setLoading(true);
+        setMatchesLoading(true);
         const data = await GetMatches();
         setMatches(data);
       } catch (error) {
         console.error('Error fetching matches:', error);
       } finally {
-        setLoading(false);
+        setMatchesLoading(false);
       }
     };
 
@@ -123,18 +124,18 @@ const useSearchQuery = () => {
     const fetchProfile = async () => {
       if (!debouncedQuery) {
         setProfileData([]);
-        setLoading(false);
+        setProfileLoading(false);
         return;
       }
 
       try {
-        setLoading(true);
+        setProfileLoading(true);
         const data = await GetSteamProfile(debouncedQuery);
         setProfileData(data);
       } catch (error) {
         console.error('Error fetching Steam profile:', error);
       } finally {
-        setLoading(false);
+        setProfileLoading(false);
       }
     };
 
@@ -149,11 +150,12 @@ const useSearchQuery = () => {
   );
 
   return {
-    loading,
     inputValue,
     profileData,
     searchQuery,
     heroIdToImage,
+    matchesLoading,
+    profileLoading,
     topFiveMatches,
     handleInputChange,
     playerRankImageById,
