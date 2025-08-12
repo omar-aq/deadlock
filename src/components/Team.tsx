@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatNumberCompact } from '@/lib/utils';
 
 interface TeamProps {
   team: Array<{
@@ -26,8 +27,11 @@ const Team: React.FC<TeamProps> = ({
         <span className={`size-2 rounded-full ${colorClass}`} />
         {teamName}
       </span>
-      <span className="rounded-md border px-2 py-1 text-xs">
-        NW: {netWorth}
+      <span
+        className="rounded-md border px-2 py-1 text-xs"
+        title={`Net Worth: ${netWorth.toLocaleString()}`}
+      >
+        NW: {formatNumberCompact(netWorth)}
       </span>
     </div>
     <ul className="space-y-2">
