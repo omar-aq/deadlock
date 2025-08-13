@@ -2,26 +2,54 @@ import { useEffect, useMemo, useState } from 'react';
 import { GetRanks } from '@/services/apis/ranksService';
 import type { Ranks, SelectRankOption } from '@/types/rank';
 
+let ranksCache: Ranks | null = null;
+let ranksPromise: Promise<Ranks> | null = null;
+
 const useRanks = () => {
   const [ranks, setRanks] = useState<Ranks>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isActive = true;
+
     const fetchRanks = async () => {
       setLoading(true);
       setError(null);
       try {
-        const ranksData = await GetRanks();
-        setRanks(ranksData);
+        if (ranksCache) {
+          if (!isActive) return;
+          setRanks(ranksCache);
+          return;
+        }
+
+        if (!ranksPromise) {
+          ranksPromise = GetRanks().then((data) => {
+            ranksCache = data;
+            return data;
+          });
+        }
+
+        const data = await ranksPromise;
+        if (!isActive) return;
+        setRanks(data);
       } catch (err) {
         console.error('Error fetching ranks:', err);
-        setError('Failed to load ranks. Please try again later.');
+        if (isActive) {
+          setError('Failed to load ranks. Please try again later.');
+        }
       } finally {
-        setLoading(false);
+        if (isActive) {
+          setLoading(false);
+        }
       }
     };
+
     fetchRanks();
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const formattedRanks = useMemo((): SelectRankOption[] => {
