@@ -25,8 +25,9 @@ const useSearchQuery = () => {
 
   const { heroes } = useHeroes();
   const { formattedRanks } = useRanks();
+
   const heroIdToImage = useMemo(() => {
-    const map = new Map();
+    const map = new Map<number, string>();
     heroes.forEach((hero) => map.set(hero.id, hero.images.minimap_image));
     return map;
   }, [heroes]);

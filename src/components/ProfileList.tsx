@@ -58,4 +58,4 @@ const ProfileList: React.FC<ProfileListProps> = ({
   </ul>
 );
 
-export default ProfileList;
+export default React.memo(ProfileList);
