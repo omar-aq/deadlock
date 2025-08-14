@@ -67,35 +67,45 @@ const useHeroes = () => {
     return matches ? (value / matches).toFixed(1) : '0';
   };
 
-  const highestWinRate = Math.max(
-    ...heroesStats.map((stat) => (stat?.wins / stat?.matches) * 100 || 0)
-  );
-  const highestPickRate = Math.max(
-    ...heroesStats.map((stat) =>
-      parseFloat(
-        getPercentageRate(stat?.matches || 0, stat?.matches_per_bucket || 0)
-      )
-    )
-  );
+  const highestWinRate = useMemo(() => {
+    return Math.max(
+      ...heroesStats.map((stat) => (stat?.wins / stat?.matches) * 100 || 0)
+    );
+  }, [heroesStats]);
 
-  const data: HeroTableRow[] = heroes.map((hero) => {
-    const stats = heroesStatsMap.get(hero.id);
-    const matches = stats?.matches ?? 0;
-    const winRate = getPercentageRate(stats?.wins ?? 0, matches);
-    const pickRate = getPercentageRate(matches, stats?.matches_per_bucket ?? 0);
-    const kills = getAverage(stats?.total_kills ?? 0, matches);
-    const deaths = getAverage(stats?.total_deaths ?? 0, matches);
-    const assists = getAverage(stats?.total_assists ?? 0, matches);
-    return {
-      id: hero.id,
-      heroImage: hero.images.minimap_image,
-      heroName: hero.name,
-      winRate,
-      pickRate,
-      kda: `${kills}/${deaths}/${assists}`,
-      matches,
-    };
-  });
+  const highestPickRate = useMemo(() => {
+    return Math.max(
+      ...heroesStats.map((stat) => {
+        const matches = stat?.matches ?? 0;
+        const perBucket = stat?.matches_per_bucket ?? 0;
+        return perBucket ? (matches / perBucket) * 100 : 0;
+      })
+    );
+  }, [heroesStats]);
+
+  const data: HeroTableRow[] = useMemo(() => {
+    return heroes.map((hero) => {
+      const stats = heroesStatsMap.get(hero.id);
+      const matches = stats?.matches ?? 0;
+      const winRate = getPercentageRate(stats?.wins ?? 0, matches);
+      const pickRate = getPercentageRate(
+        matches,
+        stats?.matches_per_bucket ?? 0
+      );
+      const kills = getAverage(stats?.total_kills ?? 0, matches);
+      const deaths = getAverage(stats?.total_deaths ?? 0, matches);
+      const assists = getAverage(stats?.total_assists ?? 0, matches);
+      return {
+        id: hero.id,
+        heroImage: hero.images.minimap_image,
+        heroName: hero.name,
+        winRate,
+        pickRate,
+        kda: `${kills}/${deaths}/${assists}`,
+        matches,
+      };
+    });
+  }, [heroes, heroesStatsMap]);
 
   return {
     loading,
