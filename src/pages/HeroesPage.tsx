@@ -162,7 +162,7 @@ const HeroesPage = () => {
         />
       </div>
 
-      {loading ? (
+      {loading || data.length === 0 ? (
         <TableSkeleton />
       ) : (
         <div

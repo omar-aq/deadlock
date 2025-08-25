@@ -168,7 +168,7 @@ const ItemsPage = () => {
           placeholder="Maximum Ranks"
         />
       </div>
-      {loading ? (
+      {loading || data.length === 0 ? (
         <TableSkeleton />
       ) : (
         <div
